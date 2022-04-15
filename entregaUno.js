@@ -17,43 +17,48 @@
 // 4) Crear un objeto llamado usuario con valores arbitrarios e invocar sus metodos
 
 class Usuario {
-    constructor(nombre, apellido, libros, mascotas) {
-        this.nombre = nombre,
-        this.apellido = apellido,
-        this.libros = libros,
-        this.mascotas= mascotas;
-        
-    }
-    getFullName(){
-          console.log(`El nombre completo es ${this.nombre} ${this.apellido}`)
-      }
-    addMascotas (mascotaNueva){
-          return (
-              console.log(this.mascotas.push(mascotaNueva)))
-      }
-    countMascotas(){
-          return (console.log(this.mascotas.length))
-      }
-    addBook(titulo, escritor){
-        let libro={
-           nombre :titulo,
-            autor : escritor
-        }
+  constructor(nombre, apellido, libros, mascotas) {
+    (this.nombre = nombre),
+      (this.apellido = apellido),
+      (this.libros = libros),
+      (this.mascotas = mascotas);
+  }
+  getFullName() {
+    console.log(`El nombre completo es ${this.nombre} ${this.apellido}`);
+  }
+  addMascotas(mascotaNueva) {
+    return console.log(this.mascotas.push(mascotaNueva));
+  }
+  countMascotas() {
+    return console.log(this.mascotas.length);
+  }
+  addBook(titulo, escritor) {
+    let libro = {
+      nombre: titulo,
+      autor: escritor,
+    };
 
-              this.libros.push(libro)
-              return (console.log(this.libros))
-    }
-    getBookName(){
-          let nombreLibros = [];
-          nombreLibros = nombreLibros.push(this.libros.Find(libros => libros.nombre))
-          return (console.log(nombreLibros))
-      }
+    this.libros.push(libro);
+    return console.log(this.libros);
+  }
+  getBookName() {
+    let nombreLibros = [];
+    this.libros.find((libro) => {
+      nombreLibros = nombreLibros.push(libro.nombre);
+    });
+    return console.log(nombreLibros);
+  }
 }
 
-const Hernan = new Usuario("Hernan", "Gomez", [{nombre:"El principito", autor:"Arthur King"}], ["Perro","Gato"]);
+const Hernan = new Usuario(
+  "Hernan",
+  "Gomez",
+  [{ nombre: "El principito", autor: "Arthur King" }],
+  ["Perro", "Gato"]
+);
 
 Hernan.getFullName();
 Hernan.addMascotas("Loro");
-console.log(Hernan.mascotas)
-Hernan.addBook("Harry Potter 29", "Maria Elena Walsh")
-Hernan.getBookName()
+console.log(Hernan.mascotas);
+Hernan.addBook("Harry Potter 29", "Maria Elena Walsh");
+Hernan.getBookName();
