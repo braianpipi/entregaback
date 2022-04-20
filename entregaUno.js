@@ -17,20 +17,20 @@
 // 4) Crear un objeto llamado usuario con valores arbitrarios e invocar sus metodos
 
 class Usuario {
-  constructor(nombre, apellido, libros, mascotas) {
-    (this.nombre = nombre),
-      (this.apellido = apellido),
-      (this.libros = libros),
-      (this.mascotas = mascotas);
+  constructor(nombre, apellido) {
+    this.nombre = nombre,
+      this.apellido = apellido,
+      this.libros = [],
+      this.mascotas = []
   }
   getFullName() {
-    console.log(`El nombre completo es ${this.nombre} ${this.apellido}`);
+    return(`El nombre completo es ${this.nombre} ${this.apellido}`);
   }
   addMascotas(mascotaNueva) {
-    return console.log(this.mascotas.push(mascotaNueva));
+    return this.mascotas.push(mascotaNueva)
   }
   countMascotas() {
-    return console.log(this.mascotas.length);
+    return this.mascotas.length
   }
   addBook(titulo, escritor) {
     let libro = {
@@ -38,27 +38,27 @@ class Usuario {
       autor: escritor,
     };
 
-    this.libros.push(libro);
-    return console.log(this.libros);
+    return this.libros.push(libro);
+    
   }
   getBookName() {
-    let nombreLibros = [];
-    this.libros.find((libro) => {
-      nombreLibros = nombreLibros.push(libro.nombre);
-    });
-    return console.log(nombreLibros);
+    return this.libros.map(e => e.nombre);
   }
 }
 
 const Hernan = new Usuario(
   "Hernan",
-  "Gomez",
-  [{ nombre: "El principito", autor: "Arthur King" }],
-  ["Perro", "Gato"]
+  "Gomez"
 );
 
 Hernan.getFullName();
-Hernan.addMascotas("Loro");
+console.log(Hernan.getFullName());
+Hernan.addMascotas("Perro");
+console.log(Hernan)
 console.log(Hernan.mascotas);
 Hernan.addBook("Harry Potter 29", "Maria Elena Walsh");
+Hernan.addBook("El Principito", "Garcia Marquez");
+console.log(Hernan.libros);
 Hernan.getBookName();
+console.log(Hernan.getBookName())
+
