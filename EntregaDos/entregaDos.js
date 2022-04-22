@@ -7,7 +7,6 @@
 // deleteById(Number): void-Elimina el archivo el objeto buscado con el id buscado.
 // deleteAll():void. Elimina todos los objetos presentes en el archivo .
 
-
 // Aspectos a incluir en el entregable:
 // - El metodo save incorpora al producto un id numerico, que debera ser siempre uno mas que el id del ultimo objeto
 // (o id 1 si es el primer objeto que se agrega) y no puede estar repetido.
@@ -23,75 +22,79 @@
 //     thumbnail:{url de la foto del producto}
 // }
 
-const fs = require('fs')
+const fs = require("fs");
 
 class Contenedor {
-    constructor(file){
-        this.file= file
-
+  constructor(file) {
+    this.file = file;
+  }
+  async save(objeto) {
+    try {
+      let informacion = await fs.promises.readFile(this.file, "utf-8");
+      informacion = JSON.parse(informacion);
+      let idUltimo = informacion.map((e) => e.id);
+      let idAsignado = idUltimo.length + 1;
+      objeto = {
+        id: idAsignado,
+        title: objeto.title,
+        price: objeto.price,
+        thumbail: objeto.thumbail,
+      };
+      informacion.push(objeto);
+      await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`);
+      return console.log(`El id asignado a tu producto es ${--idAsignado}`);
+    } catch (error) {
+      console.log("error", error);
     }
-
-    async leer(){
-        try{
-            let informacion = await fs.promises.readFile(this.file, "utf-8")
-            console.log(informacion)
-            return JSON.parse(informacion)
-
-        } catch(error){
-            console.log('error', error)
-        }
+  }
+  async getByAll() {
+    try {
+      let informacion = await fs.promises.readFile(this.file, "utf-8");
+      informacion = JSON.parse(informacion);
+      return console.log(informacion);
+    } catch (error) {
+      console.log("error", error);
     }
-
-    async save(objeto){
-        try{
-            let informacion = await fs.promises.readFile(this.file, "utf-8")
-            informacion = JSON.parse(informacion)
-            let idUltimo=informacion.map(e=> e.id);
-            let idAsignado= idUltimo.length + 1;
-            objeto= {
-                "id" : idAsignado,
-                "title": objeto.title,
-                "price": objeto.price,
-                "thumbail": objeto.thumbail
-            }
-            informacion.push(objeto);
-            await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`)
-            return console.log( `El id asignado a tu producto es ${--idAsignado}`)
-
-        }catch(error){
-            console.log('error', error)
-        }
+  }
+  async getById(idBuscado) {
+    try {
+      let informacion = await fs.promises.readFile(this.file, "utf-8");
+      informacion = JSON.parse(informacion);
+      let productoId = await informacion.find((e) => e.id === idBuscado);
+      return productoId === undefined
+        ? console.log(`No se encontro el producto con el Id ${idBuscado}`)
+        : console.log(productoId);
+    } catch (error) {
+      console.log("error", error);
     }
-    async getByAll(){
-        try{ 
-            let informacion = await fs.promises.readFile(this.file, 'utf-8')
-            informacion = JSON.parse(informacion)
-            return console.log(informacion)
-
-        }catch(error){
-            console.log('error', error)
-        }
+  }
+  async deleteById(idEliminar) {
+    try {
+      let informacion = await fs.promises.readFile(this.file, "utf-8");
+      informacion = JSON.parse(informacion);
+      let objetoEliminar = informacion.filter(informacion => informacion.id !== idEliminar)
+      await fs.promises.writeFile(this.file, `${JSON.stringify(objetoEliminar)}`);
+      return console.log(objetoEliminar)
+    } catch (error) {
+      console.log("error", error);
     }
-    async getById(idBuscado){
-        try{
-            let informacion = await fs.promises.readFile(this.file, 'utf-8')
-            informacion = JSON.parse(informacion)
-            let productoId = await informacion.find( e => e.id === idBuscado);
-            return productoId === undefined   ?  console.log(`No se encontro el producto con el Id ${idBuscado}`) : console.log(productoId)  
-        }catch(error){
-            console.log('error', error)
-        }
-    }
+  }
+  async deleteAll(){
+      try{
+        let informacion = [];
+        await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`)
+        return console.log(informacion)
+    } catch (error) {
+        console.log("error", error);
+      }
 
-    
+  }
 }
 
-
-
-
-
-let contenedor = new Contenedor('./productos.txt')
+let contenedor = new Contenedor("./productos.txt");
 // contenedor.save({"title": "asass","price": 2, "thumbail": "asdsadas.jpg"});
 // contenedor.getByAll();
 // contenedor.getById(1);
+// contenedor.deleteById(1)
 // export default Contenedor;
+// contenedor.deleteAll()
