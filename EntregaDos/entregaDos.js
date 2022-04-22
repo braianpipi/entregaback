@@ -42,7 +42,7 @@ class Contenedor {
       };
       informacion.push(objeto);
       await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`);
-      return console.log(`El id asignado a tu producto es ${--idAsignado}`);
+      return console.log(`El id asignado a tu producto es ${idAsignado}`);
     } catch (error) {
       console.log("error", error);
     }
@@ -90,8 +90,10 @@ class Contenedor {
 
   }
 }
+module.exports = Contenedor
 
 let contenedor = new Contenedor("./productos.txt");
+
 // contenedor.save({"title": "asass","price": 2, "thumbail": "asdsadas.jpg"});
 // contenedor.getByAll();
 // contenedor.getById(1);
