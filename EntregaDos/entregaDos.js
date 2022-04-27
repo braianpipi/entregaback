@@ -32,8 +32,9 @@ class Contenedor {
     try {
       let informacion = await fs.promises.readFile(this.file, "utf-8");
       informacion = JSON.parse(informacion);
-      let idUltimo = informacion.map((e) => e.id);
-      let idAsignado = idUltimo.length + 1;
+      let idUltimo = informacion.map((producto) => producto.id);
+      let idAsignado = Math.max(...idUltimo);
+      idAsignado ++;
       objeto = {
         id: idAsignado,
         title: objeto.title,
