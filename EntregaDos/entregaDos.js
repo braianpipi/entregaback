@@ -28,13 +28,19 @@ class Contenedor {
   constructor(file) {
     this.file = file;
   }
+
+  async leer() {
+    const data = await fs.promises.readFile(this.file, "utf-8");
+    const dataJson = JSON.parse(data);
+    return dataJson;
+  }
+
   async save(objeto) {
     try {
-      let informacion = await fs.promises.readFile(this.file, "utf-8");
-      informacion = JSON.parse(informacion);
+      let informacion = await this.leer();
       let idUltimo = informacion.map((producto) => producto.id);
       let idAsignado = Math.max(...idUltimo);
-      idAsignado ++;
+      idAsignado++;
       objeto = {
         id: idAsignado,
         title: objeto.title,
@@ -43,55 +49,58 @@ class Contenedor {
       };
       informacion.push(objeto);
       await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`);
-      return console.log(`El id asignado a tu producto es ${idAsignado}`);
+      return `El id asignado a tu producto es ${idAsignado}`;
     } catch (error) {
       console.log("error", error);
     }
   }
   async getByAll() {
     try {
-      let informacion = await fs.promises.readFile(this.file, "utf-8");
-      informacion = JSON.parse(informacion);
-      return console.log(informacion);
+      let informacion = await this.leer();
+      return informacion;
     } catch (error) {
       console.log("error", error);
     }
   }
   async getById(idBuscado) {
     try {
-      let informacion = await fs.promises.readFile(this.file, "utf-8");
-      informacion = JSON.parse(informacion);
-      let productoId = await informacion.find((e) => e.id === idBuscado);
+      let informacion = await this.leer();
+      let productoId = await informacion.find(
+        (producto) => producto.id === idBuscado
+      );
       return productoId === undefined
-        ? console.log(`No se encontro el producto con el Id ${idBuscado}`)
-        : console.log(productoId);
+        ? `No se encontro el producto con el Id ${idBuscado}`
+        : productoId;
     } catch (error) {
       console.log("error", error);
     }
   }
   async deleteById(idEliminar) {
     try {
-      let informacion = await fs.promises.readFile(this.file, "utf-8");
-      informacion = JSON.parse(informacion);
-      let objetoEliminar = informacion.filter(informacion => informacion.id !== idEliminar)
-      await fs.promises.writeFile(this.file, `${JSON.stringify(objetoEliminar)}`);
-      return console.log(objetoEliminar)
+      let informacion = await this.leer();
+      let objetoEliminar = informacion.filter(
+        (informacion) => informacion.id !== idEliminar
+      );
+      await fs.promises.writeFile(
+        this.file,
+        `${JSON.stringify(objetoEliminar)}`
+      );
+      return objetoEliminar;
     } catch (error) {
       console.log("error", error);
     }
   }
-  async deleteAll(){
-      try{
-        let informacion = [];
-        await fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`)
-        return console.log(informacion)
+  deleteAll() {
+    try {
+      let informacion = [];
+      fs.promises.writeFile(this.file, `${JSON.stringify(informacion)}`);
+      return informacion;
     } catch (error) {
-        console.log("error", error);
-      }
-
+      console.log("error", error);
+    }
   }
 }
-module.exports = Contenedor
+module.exports = Contenedor;
 
 let contenedor = new Contenedor("./productos.txt");
 
